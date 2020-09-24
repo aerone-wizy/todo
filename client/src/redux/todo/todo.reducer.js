@@ -2,20 +2,26 @@ import TodoActionTypes from "./todo.types";
 
 const INITIAL_STATE = {
   todos: null,
-  isLoaded: false,
   msg: "",
   error: null,
 };
 
 const todoReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case TodoActionTypes.CREATE_TODO_START:
+    case TodoActionTypes.READ_TODOS_START:
+    case TodoActionTypes.UPDATE_TODO_START:
+    case TodoActionTypes.DELETE_TODO_START:
+      return {
+        ...state,
+        msg: "",
+      };
     case TodoActionTypes.CREATE_TODO_SUCCESS:
     case TodoActionTypes.READ_TODOS_SUCCESS:
     case TodoActionTypes.UPDATE_TODO_SUCCESS:
     case TodoActionTypes.DELETE_TODO_SUCCESS:
       return {
         todos: action.payload.todos,
-        isLoaded: true,
         msg: action.payload.msg,
         error: null,
       };
@@ -25,7 +31,6 @@ const todoReducer = (state = INITIAL_STATE, action) => {
     case TodoActionTypes.DELETE_TODO_FAILURE:
       return {
         ...state,
-        isLoaded: true,
         error: action.payload,
       };
     default:

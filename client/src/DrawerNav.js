@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 // import { Route, Switch, Link, Redirect } from "react-router-dom";
 import { Redirect } from "react-router-dom";
@@ -8,6 +8,7 @@ import {
   selectCurrentUser,
   selectIsAthenticated,
 } from "./redux/user/user.selector";
+import { selectMsg } from "./redux/todo/todo.selector";
 
 import { signOutStart } from "./redux/user/user.actions";
 
@@ -23,6 +24,8 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Menu from "@material-ui/core/Menu";
+import Snackbar from "@material-ui/core/Snackbar";
+import CloseIcon from "@material-ui/icons/Close";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,12 +39,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DrawerNav = ({ signOutStart, currentUser, isAuthenticated }) => {
+const DrawerNav = ({ signOutStart, currentUser, isAuthenticated, msg }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [snackBar, setSnackBar] = useState(false);
+  // const [msg, setMsg] = useState(msg);
+  // const [open, setOpen] = React.useState(false);
 
-  const handleSignout = async () => {
+  useEffect(() => {
+    if (msg) setSnackBar(true);
+  }, [msg]);
+
+  const handleSnackBar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackBar(false);
+  };
+
+  const handleSignout = () => {
     console.log("test logout");
     signOutStart();
   };
@@ -104,6 +121,28 @@ const DrawerNav = ({ signOutStart, currentUser, isAuthenticated }) => {
         </Toolbar>
       </AppBar>
       <Todo />
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        open={snackBar}
+        autoHideDuration={6000}
+        onClose={handleSnackBar}
+        message={msg}
+        action={
+          <React.Fragment>
+            <IconButton
+              size="small"
+              aria-label="close"
+              color="inherit"
+              onClick={handleSnackBar}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </React.Fragment>
+        }
+      />
     </div>
   );
 };
@@ -111,6 +150,7 @@ const DrawerNav = ({ signOutStart, currentUser, isAuthenticated }) => {
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
   isAuthenticated: selectIsAthenticated,
+  msg: selectMsg,
 });
 
 const mapDispatchToProps = (dispatch) => ({

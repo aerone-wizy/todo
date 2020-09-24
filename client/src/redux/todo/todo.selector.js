@@ -1,5 +1,6 @@
 import { createSelector } from "reselect";
 
-const selectUser = (state) => state.todo;
+const selectTodo = (state) => state.todo;
 
-export const selectTodos = createSelector([selectUser], (todo) => todo.todos);
+export const selectTodos = createSelector([selectTodo], (todo) => todo.todos);
+export const selectMsg = createSelector([selectTodo], (todo) => todo.msg);
