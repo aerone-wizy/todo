@@ -1,8 +1,8 @@
 import TodoActionTypes from "./todo.types";
 
-export const createTodoStart = (todo) => ({
+export const createTodoStart = (todo, dueDate, dueTime) => ({
   type: TodoActionTypes.CREATE_TODO_START,
-  payload: todo,
+  payload: { todo, dueDate, dueTime },
 });
 export const createTodoSuccess = (result) => ({
   type: TodoActionTypes.CREATE_TODO_SUCCESS,
@@ -25,9 +25,9 @@ export const readTodosFailure = (error) => ({
   payload: error,
 });
 
-export const updateTodoStart = (id, todo) => ({
+export const updateTodoStart = (id, todo, dueTime, isDone) => ({
   type: TodoActionTypes.UPDATE_TODO_START,
-  payload: { id, todo },
+  payload: { id, todo, dueTime, isDone },
 });
 export const updateTodoSuccess = (todos, msg) => ({
   type: TodoActionTypes.UPDATE_TODO_SUCCESS,

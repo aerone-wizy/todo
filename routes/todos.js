@@ -4,11 +4,12 @@ var router = express.Router();
 
 //? -- ADD TODO --
 router.post("/", (req, res) => {
-  const { todo } = req.body;
+  const { todo, dueDate, dueTime } = req.body;
+  // console.log("todo, dueDate, dueTime", todo, dueDate, dueTime);
   if (!todo) res.json({ error: "Todo is empty" });
   pool.query(
-    "INSERT INTO todos (user_id, todo, date_created) VALUES($1, $2, $3) RETURNING *",
-    [req.user.id, todo, new Date()],
+    "INSERT INTO todos (user_id, todo, date_created, due_date, due_time, is_done) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",
+    [req.user.id, todo, new Date(), dueDate, dueTime, false],
     (err, result) => {
       if (err) console.log(err);
       // console.log("result", result);
@@ -26,10 +27,12 @@ router.post("/", (req, res) => {
 });
 
 //? -- UPDATE TODO --
-router.put("/:id", (req, res) =>
+router.put("/:id", (req, res) => {
+  const { todo, dueTime, isDone } = req.body;
+  // console.log(" todo, dueTime, isDone ", todo, dueTime, isDone);
   pool.query(
-    "UPDATE todos SET todo = $1 WHERE todo_id = $2 RETURNING *",
-    [req.body.todo, req.params.id],
+    "UPDATE todos SET todo = $2, due_time = $3, is_done = $4  WHERE todo_id = $1 RETURNING *",
+    [req.params.id, todo, dueTime, isDone],
     (err, result) => {
       if (err) console.log(err);
       // console.log("result", result);
@@ -43,8 +46,8 @@ router.put("/:id", (req, res) =>
           })
         : res.json({ error: "No rows affected" });
     }
-  )
-);
+  );
+});
 
 //? -- DELETE TODO --
 router.delete("/:id", (req, res) =>

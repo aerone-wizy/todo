@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-// import {  } from "moment";
+import moment from "moment";
+
 import { makeStyles } from "@material-ui/core/styles";
 import {
   ListItem,
   ListItemText,
   Checkbox,
   Button,
-  Modal,
-  Input,
   Card,
+  InputBase,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
 
 import { deleteTodoStart, updateTodoStart } from "../redux/todo/todo.actions";
 
@@ -36,48 +35,76 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TodoItem = ({ todo, updateTodo, deleteTodo }) => {
-  const [open, setOpen] = useState(false);
+  const { todo_id, is_done, date_created, due_time } = todo;
+
   const classes = useStyles();
   const [input, setInput] = useState(todo.todo);
+  const [time, setTime] = useState(moment(due_time, "LT").format("LT"));
 
-  const handleUpdate = (event) => {
-    event.preventDefault();
-    setOpen(false);
-    updateTodo(todo.todo_id, input);
-    setInput("");
+  const handleUpdate = () => {
+    if (todo.todo === input) return;
+
+    updateTodo(todo_id, input, time, is_done);
+  };
+
+  const handleCheckbox = () => {
+    updateTodo(todo_id, todo.todo, due_time, !is_done);
   };
 
   const handleDelete = () => {
-    deleteTodo(todo.todo_id);
+    deleteTodo(todo_id);
+  };
+
+  const handleDueTime = () => {
+    // console.log(
+    //   "is invalid: " + (moment(time, "LT").format("LT") === "Invalid date")
+    // );
+    // console.log("time changed to: ", time);
+
+    if (moment(time, "LT").format("LT") === "Invalid date") {
+      // console.log("that is invalid");
+      setTime(moment(due_time, "LT").format("LT"));
+      // console.log(
+      //   "time is converted to: ",
+      //   moment(due_time, "LT").format("LT")
+      // );
+      // console.log("returning...");
+      return;
+    }
+
+    setTime(moment(time, "LT").format("LT"));
+
+    if (due_time === moment(time, "LT").format("LT")) return;
+    // console.log("time", time);
+    // console.log("updating time");
+    updateTodo(todo_id, todo.todo, moment(time, "LT").format("LT"), is_done);
+    // console.log("time updated to: '" + moment(time, "LT").format("LT") + "'");
   };
 
   return (
     <div>
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <div className={classes.paper}>
-          <form onSubmit={handleUpdate}>
-            <h3 style={{ textAlign: "center" }}>Change your todo</h3>
-            <Input
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-            />
-            <Button type="submit" disabled={!input} onClick={handleUpdate}>
-              Update Todo
-            </Button>
-          </form>
-        </div>
-      </Modal>
       <ListItem>
         <Card className={classes.todo}>
-          <Checkbox />
+          <Checkbox checked={is_done} onChange={handleCheckbox} />
           <ListItemText
-            primary={todo.todo}
-            secondary={"" + todo.date_created}
+            primary={
+              <InputBase
+                defaultValue={input}
+                onChange={(event) => setInput(event.target.value)}
+                onBlur={handleUpdate}
+                style={{ width: "60%" }}
+                inputProps={{ "aria-label": "naked" }}
+              />
+            }
+            secondary={"Created on " + moment(date_created).format("LLLL")}
             style={{ whiteSpace: "nowrap" }}
           />
-          <Button onClick={() => setOpen(true)}>
-            <EditIcon />
-          </Button>
+          <InputBase
+            value={time}
+            onChange={(event) => setTime(event.target.value)}
+            onBlur={handleDueTime}
+            inputProps={{ "aria-label": "naked" }}
+          />
           <Button onClick={handleDelete}>
             <DeleteIcon />
           </Button>
@@ -88,7 +115,8 @@ const TodoItem = ({ todo, updateTodo, deleteTodo }) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  updateTodo: (id, todo) => dispatch(updateTodoStart(id, todo)),
+  updateTodo: (id, todo, dueTime, isDone) =>
+    dispatch(updateTodoStart(id, todo, dueTime, isDone)),
   deleteTodo: (id) => dispatch(deleteTodoStart(id)),
 });
 

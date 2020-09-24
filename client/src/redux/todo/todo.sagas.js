@@ -20,13 +20,12 @@ import {
   deleteTodoFailure,
 } from "./todo.actions";
 
-export function* createTodo({ payload }) {
+export function* createTodo({ payload: { todo, dueDate, dueTime } }) {
   try {
-    const res = yield createRequest(payload);
+    const res = yield createRequest(todo, dueDate, dueTime);
 
     if (res.error) yield put(createTodoFailure(res.error));
-
-    yield put(createTodoSuccess(res));
+    else yield put(createTodoSuccess(res));
   } catch (error) {
     yield put(readTodosFailure(error));
   }
@@ -37,20 +36,18 @@ export function* readTodos() {
     const res = yield readRequest();
 
     if (res.error) yield put(readTodosFailure(res.error));
-
-    yield put(readTodosSuccess(res.todos, res.msg));
+    else yield put(readTodosSuccess(res.todos, res.msg));
   } catch (error) {
     yield put(readTodosFailure(error));
   }
 }
 
-export function* updateTodo({ payload: { id, todo } }) {
+export function* updateTodo({ payload: { id, todo, dueTime, isDone } }) {
   try {
-    const res = yield updateRequest(id, todo);
+    const res = yield updateRequest(id, todo, dueTime, isDone);
 
     if (res.error) yield put(deleteTodoFailure(res.error));
-
-    yield put(updateTodoSuccess(res.todos, res.msg));
+    else yield put(updateTodoSuccess(res.todos, res.msg));
   } catch (error) {
     yield put(deleteTodoFailure(error));
   }
@@ -61,8 +58,7 @@ export function* deleteTodo({ payload }) {
     const res = yield deleteRequest(payload);
 
     if (res.error) yield put(updateTodoFailure(res.error));
-
-    yield put(deleteTodoSuccess(res.todos, res.msg));
+    else yield put(deleteTodoSuccess(res.todos, res.msg));
   } catch (error) {
     yield put(updateTodoFailure(error));
   }

@@ -1,10 +1,10 @@
-export const createRequest = (input) =>
+export const createRequest = (todo, dueDate, dueTime) =>
   fetch("http://localhost:9000/api/todos", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     withCredentials: true,
     credentials: "include",
-    body: JSON.stringify({ todo: input }),
+    body: JSON.stringify({ todo, dueDate, dueTime }),
   })
     .then((res) => res.json())
     // .then((res) => console.log(res))
@@ -20,13 +20,13 @@ export const readRequest = () =>
     // .then((res) => setTodos(res))
     .catch((error) => console.log("error", error));
 
-export const updateRequest = (id, todo) =>
+export const updateRequest = (id, todo, dueTime, isDone) =>
   fetch(`http://localhost:9000/api/todos/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     withCredentials: true,
     credentials: "include",
-    body: JSON.stringify({ todo: todo }),
+    body: JSON.stringify({ todo, dueTime, isDone }),
   })
     .then((res) => res.json())
     // .then((res) => console.log(res.todo_id))
