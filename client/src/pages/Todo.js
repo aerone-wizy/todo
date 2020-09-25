@@ -3,7 +3,13 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import moment from "moment";
 
-import { Button, CircularProgress, List, TextField } from "@material-ui/core";
+import {
+  Button,
+  CircularProgress,
+  List,
+  Paper,
+  TextField,
+} from "@material-ui/core";
 
 import TodoItem from "../components/TodoItem";
 
@@ -102,31 +108,90 @@ const Todo = ({ createTodo, readTodos, todos }) => {
         </div>
       </form>
       <List>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          {!todos ? (
-            <CircularProgress />
-          ) : (
-            dates
-              .sort()
-              .reverse()
-              .map((date) => (
-                <div key={date}>
-                  {moment(date).format("dddd, MMMM D YYYY")}
-                  {todos.map((todo) =>
-                    date === todo.due_date ? (
-                      <TodoItem key={todo.todo_id} todo={todo} />
-                    ) : null
-                  )}
-                </div>
-              ))
-          )}
-        </div>
+        {!todos ? (
+          <CircularProgress />
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <br />
+            <Paper>
+              {
+                dates.includes(moment().format("YYYY-MM-DD")) ? (
+                  <div key={moment().format("YYYY-MM-DD")}>
+                    {"Today is " + moment().format("dddd, MMMM D YYYY")}
+                    {todos.map((todo) =>
+                      moment().format("YYYY-MM-DD") === todo.due_date ? (
+                        <TodoItem key={todo.todo_id} todo={todo} />
+                      ) : null
+                    )}
+                  </div>
+                ) : (
+                  <div> Nothing todo for today </div>
+                )
+                // dates
+                // .sort()
+                // .reverse()
+                // .map((date) =>
+                //   moment(date, "YYYY-MM-DD").isSame(
+                //     moment().format("YYYY-MM-DD")
+                //   ) ? (
+                //     <div key={date}>
+                //       {moment(date).format("dddd, MMMM D YYYY")}
+                //       {todos.map((todo) =>
+                //         date === todo.due_date ? (
+                //           <TodoItem key={todo.todo_id} todo={todo} />
+                //         ) : null
+                //       )}
+                //     </div>
+                //   ) : null
+                // )
+              }
+            </Paper>
+            <br />
+            <Paper>
+              {"Upcomming"}
+              {dates
+                .sort()
+                .reverse()
+                .map((date) =>
+                  moment(date, "YYYY-MM-DD").isAfter() ? (
+                    <div key={date}>
+                      {moment(date).format("dddd, MMMM D YYYY")}
+                      {todos.map((todo) =>
+                        date === todo.due_date ? (
+                          <TodoItem key={todo.todo_id} todo={todo} />
+                        ) : null
+                      )}
+                    </div>
+                  ) : null
+                )}
+            </Paper>
+            <br />
+            <Paper style={{ backgroundColor: "#AAACB0" }}>
+              {"Past"}
+              {dates
+                .sort()
+                .reverse()
+                .map((date) =>
+                  moment(date, "YYYY-MM-DD").isAfter() ? (
+                    <div key={date}>
+                      {moment(date).format("dddd, MMMM D YYYY")}
+                      {todos.map((todo) =>
+                        date === todo.due_date ? (
+                          <TodoItem key={todo.todo_id} todo={todo} />
+                        ) : null
+                      )}
+                    </div>
+                  ) : null
+                )}
+            </Paper>
+          </div>
+        )}
       </List>
     </div>
   );

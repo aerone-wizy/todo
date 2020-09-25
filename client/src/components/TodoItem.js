@@ -56,29 +56,16 @@ const TodoItem = ({ todo, updateTodo, deleteTodo }) => {
   };
 
   const handleDueTime = () => {
-    // console.log(
-    //   "is invalid: " + (moment(time, "LT").format("LT") === "Invalid date")
-    // );
-    // console.log("time changed to: ", time);
-
     if (moment(time, "LT").format("LT") === "Invalid date") {
-      // console.log("that is invalid");
       setTime(moment(due_time, "LT").format("LT"));
-      // console.log(
-      //   "time is converted to: ",
-      //   moment(due_time, "LT").format("LT")
-      // );
-      // console.log("returning...");
       return;
     }
 
     setTime(moment(time, "LT").format("LT"));
 
     if (due_time === moment(time, "LT").format("LT")) return;
-    // console.log("time", time);
-    // console.log("updating time");
+
     updateTodo(todo_id, todo.todo, moment(time, "LT").format("LT"), is_done);
-    // console.log("time updated to: '" + moment(time, "LT").format("LT") + "'");
   };
 
   return (
