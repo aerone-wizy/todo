@@ -59,7 +59,7 @@ const DrawerNav = ({ signOutStart, currentUser, isAuthenticated, msg }) => {
   };
 
   const handleSignout = () => {
-    console.log("test logout");
+    // console.log("test logout");
     signOutStart();
   };
 

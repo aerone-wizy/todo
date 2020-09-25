@@ -11,7 +11,7 @@ import { checkUserSession } from "./redux/user/user.actions";
 
 function App({ checkUserSession }) {
   useEffect(() => {
-    console.log("didMount");
+    // console.log("didMount");
     checkUserSession();
   }, [checkUserSession]);
 

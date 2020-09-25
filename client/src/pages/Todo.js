@@ -103,7 +103,7 @@ const Todo = ({ createTodo, readTodos, todos }) => {
             size="large"
             style={{ margin: "10px" }}
           >
-            Add Todo
+            Add Todo moto
           </Button>
         </div>
       </form>
@@ -120,37 +120,18 @@ const Todo = ({ createTodo, readTodos, todos }) => {
           >
             <br />
             <Paper>
-              {
-                dates.includes(moment().format("YYYY-MM-DD")) ? (
-                  <div key={moment().format("YYYY-MM-DD")}>
-                    {"Today is " + moment().format("dddd, MMMM D YYYY")}
-                    {todos.map((todo) =>
-                      moment().format("YYYY-MM-DD") === todo.due_date ? (
-                        <TodoItem key={todo.todo_id} todo={todo} />
-                      ) : null
-                    )}
-                  </div>
-                ) : (
-                  <div> Nothing todo for today </div>
-                )
-                // dates
-                // .sort()
-                // .reverse()
-                // .map((date) =>
-                //   moment(date, "YYYY-MM-DD").isSame(
-                //     moment().format("YYYY-MM-DD")
-                //   ) ? (
-                //     <div key={date}>
-                //       {moment(date).format("dddd, MMMM D YYYY")}
-                //       {todos.map((todo) =>
-                //         date === todo.due_date ? (
-                //           <TodoItem key={todo.todo_id} todo={todo} />
-                //         ) : null
-                //       )}
-                //     </div>
-                //   ) : null
-                // )
-              }
+              {dates.includes(moment().format("YYYY-MM-DD")) ? (
+                <div key={moment().format("YYYY-MM-DD")}>
+                  {"Today is " + moment().format("dddd, MMMM D YYYY")}
+                  {todos.map((todo) =>
+                    moment().format("YYYY-MM-DD") === todo.due_date ? (
+                      <TodoItem key={todo.todo_id} todo={todo} />
+                    ) : null
+                  )}
+                </div>
+              ) : (
+                <div> Nothing todo for today </div>
+              )}
             </Paper>
             <br />
             <Paper>
@@ -178,7 +159,7 @@ const Todo = ({ createTodo, readTodos, todos }) => {
                 .sort()
                 .reverse()
                 .map((date) =>
-                  moment(date, "YYYY-MM-DD").isAfter() ? (
+                  moment(date, "YYYY-MM-DD").isBefore() ? (
                     <div key={date}>
                       {moment(date).format("dddd, MMMM D YYYY")}
                       {todos.map((todo) =>

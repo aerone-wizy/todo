@@ -19,7 +19,7 @@ router.get("/logout", (req, res) => {
 });
 
 router.post("/login", passport.authenticate("local"), (req, res) => {
-  // console.log("login route - req.user: ", req.user);
+  console.log("login route - req.user: ", req.user);
   let user = req.user;
   delete user.password;
   res.json(user);
@@ -42,8 +42,9 @@ passport.use(
 
             bcrypt.compare(password, user.password, (err, isMatch) => {
               if (err) console.log(err);
-
+              console.log("password", isMatch);
               if (isMatch) {
+                console.log("verified");
                 return done(null, user);
               } else {
                 //password is incorrect

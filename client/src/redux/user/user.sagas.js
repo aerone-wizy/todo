@@ -18,13 +18,6 @@ import {
   signUpFailure,
 } from "./user.actions";
 
-// import {
-//   auth,
-//   googleProvider,
-//   createUserProfileDocument,
-//   getCurrentUser,
-// } from "../../firebase/firebase.utils";
-
 export function* getCurrentUser() {
   try {
     let user = yield userRequest();
@@ -36,36 +29,18 @@ export function* getCurrentUser() {
   }
 }
 
-// export function* signInWithGoogle() {
-//   try {
-//     const { user } = yield auth.signInWithPopup(googleProvider);
-//     yield getSnapshotFromUserAuth(user);
-//   } catch (error) {
-//     yield put(signInFailure(error));
-//   }
-// }
-
 export function* signInWithEmail({ payload }) {
-  console.log("saga signInWithEmail payload: ", payload);
+  // console.log("saga signInWithEmail payload: ", payload);
   try {
     const user = yield loginRequest(payload);
 
-    console.log("signInWithEmail() result user:", user);
+    // console.log("signInWithEmail() result user:", user);
 
     yield put(signInSuccess(user));
   } catch (error) {
     yield put(signInFailure(error));
   }
 }
-
-// export function* isUserAuthenticated() {
-//   try {
-//     const userAuth = yield userFetch();
-//     if (!userAuth) return;
-//   } catch (error) {
-//     yield put(signInFailure(error));
-//   }
-// }
 
 export function* signOut() {
   try {
@@ -77,11 +52,11 @@ export function* signOut() {
 }
 
 export function* signUp({ payload }) {
-  console.log("payload", payload);
+  // console.log("payload", payload);
   try {
     const res = yield registerRequest(payload);
 
-    console.log("res", res);
+    // console.log("res", res);
 
     if (!res.errors) {
       yield put(signUpSuccess(res));

@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "Postgres Express React Node",
   "main": "index.js",
+  "engines": {
+    "npm": "6.x"
+  },
   "scripts": {
-    "start": "node index.js"
+    "build": "cd client && yarn build",
+    "dev": "export NODE_ENV=development&& nodemon",
+    "start": "export NODE_ENV=production&& node index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +19,7 @@
     "connect-pg-simple": "^6.2.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-flash": "0.0.2",
     "express-session": "^1.17.1",

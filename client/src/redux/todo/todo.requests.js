@@ -1,5 +1,5 @@
 export const createRequest = (todo, dueDate, dueTime) =>
-  fetch("http://localhost:9000/api/todos", {
+  fetch("http://localhost:8080/api/todos", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     withCredentials: true,
@@ -11,7 +11,7 @@ export const createRequest = (todo, dueDate, dueTime) =>
     .catch((error) => console.log("error", error));
 
 export const readRequest = () =>
-  fetch("http://localhost:9000/api/todos", {
+  fetch("http://localhost:8080/api/todos", {
     withCredentials: true,
     credentials: "include",
   })
@@ -21,7 +21,7 @@ export const readRequest = () =>
     .catch((error) => console.log("error", error));
 
 export const updateRequest = (id, todo, dueTime, isDone) =>
-  fetch(`http://localhost:9000/api/todos/${id}`, {
+  fetch(`http://localhost:8080/api/todos/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     withCredentials: true,
@@ -33,7 +33,7 @@ export const updateRequest = (id, todo, dueTime, isDone) =>
     .catch((error) => console.log("error", error));
 
 export const deleteRequest = (id) =>
-  fetch(`http://localhost:9000/api/todos/${id}`, {
+  fetch(`http://localhost:8080/api/todos/${id}`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
     withCredentials: true,

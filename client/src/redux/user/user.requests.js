@@ -1,5 +1,5 @@
 export const loginRequest = (userCredentials) =>
-  fetch("http://localhost:9000/api/users/login", {
+  fetch("http://localhost:8080/api/users/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     withCredentials: true,
@@ -10,7 +10,7 @@ export const loginRequest = (userCredentials) =>
     .catch((error) => console.log("error", error));
 
 export const registerRequest = (userCredentials) =>
-  fetch("http://localhost:9000/api/users/register", {
+  fetch("http://localhost:8080/api/users/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     withCredentials: true,
@@ -22,7 +22,7 @@ export const registerRequest = (userCredentials) =>
     .catch((error) => console.log("error", error));
 
 export const userRequest = () =>
-  fetch("http://localhost:9000/api/users/me", {
+  fetch("http://localhost:8080/api/users/me", {
     withCredentials: true,
     credentials: "include",
   })
@@ -30,7 +30,7 @@ export const userRequest = () =>
     .catch((error) => console.log("error", error));
 
 export const logoutRequest = () =>
-  fetch("http://localhost:9000/api/users/logout", {
+  fetch("http://localhost:8080/api/users/logout", {
     withCredentials: true,
     credentials: "include",
   })

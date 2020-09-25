@@ -1,12 +1,11 @@
 const Pool = require("pg").Pool;
-var password = process.env.DB_PASS;
+const config = require("./config.js");
 
 const pool = new Pool({
-  user: "aerone",
-  password: password,
-  host: "localhost",
-  port: 5432,
-  database: "todoapp",
+  user: config.USER,
+  password: config.PASS,
+  host: config.HOST,
+  database: config.NAME,
 });
 
 module.exports = pool;
