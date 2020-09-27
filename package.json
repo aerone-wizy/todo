@@ -7,7 +7,7 @@
     "npm": "6.x"
   },
   "scripts": {
-    "build": "cd client && yarn build",
+    "build": "cd client && npm run build",
     "dev": "export NODE_ENV=development&& nodemon",
     "start": "export NODE_ENV=production&& node index.js"
   },

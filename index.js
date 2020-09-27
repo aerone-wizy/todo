@@ -22,7 +22,22 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, "client/build")));
 
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+var whitelist = [
+  "http://localhost:8080",
+  "http://localhost:3000",
+  "https://todoapp-290603.an.r.appspot.com/",
+];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+
+app.use(cors({ credentials: true, corsOptions }));
 //Express flash
 app.use(flash());
 //Cookie
@@ -64,7 +79,6 @@ app.use("/api/todos", todosRouter);
 // });
 
 app.get("*", (req, res) => {
-  console.log("redirect", path.join(__dirname + "/client/build/index.html"));
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 
